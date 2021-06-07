@@ -1,0 +1,249 @@
+//BRYAN ALEXANDER MARTINEZ GUZMAN 0909-20-6903
+//ULTIMA SERIE - PROGRAMACION I - ARBOL ABB
+
+#include <iostream>
+#include <conio.h>
+#include <cstdlib>
+
+
+using namespace std;
+
+//ESTRUCTURA DE LOS NODOS 
+
+struct nodo{
+     int xyz;
+     struct nodo *left, *right;
+};
+
+typedef struct nodo *ABB;
+
+//Creacion de nuevos nodos dentro del arbol ABB
+
+ABB creat(int x)
+{
+     ABB newnode = new(struct nodo);
+     
+     newnode->xyz = x;
+     
+     newnode->left = NULL;
+     
+     newnode->right = NULL;
+
+}
+
+//COLOCACION DE CADA NODO SEGUN SI SEA MAYOR O MENOR A SU NODO PRINCIPAL EN EL ARBOL ABB
+
+
+void colocar(ABB &seriefour, int x)
+{
+     if(seriefour==NULL)
+     {
+           seriefour = creat(x);
+     }
+     else if(x < seriefour->xyz)
+          colocar(seriefour->left, x);
+     else if(x > seriefour->xyz)
+          colocar(seriefour->right, x);
+          
+          
+}
+
+//COLOCACION EN UN PRE-ORDEN SEGUN LOS NODOS INGRESADOS
+
+void opone(ABB seriefour)
+{
+     if(seriefour!=NULL)
+     {
+          cout << seriefour->xyz <<" ";
+          opone(seriefour->left);
+          opone(seriefour->right);
+     }
+}
+
+//COLOCACION EN UN IN-ORDEN SEGUN LOS NODOS INGRESADOS
+
+void optwo(ABB seriefour)
+{
+     if(seriefour!=NULL)
+     {
+          optwo(seriefour->left);
+          cout << seriefour->xyz << " ";
+          optwo(seriefour->right);
+     }
+}
+
+//COLOCACION EN UN POS-ORDEN SEGUN LOS NODOS INGRESADOS
+
+void opthree(ABB seriefour)
+{
+     if(seriefour!=NULL)
+     {
+          opthree(seriefour->left);
+          opthree(seriefour->right);
+          cout << seriefour->xyz << " ";
+     }
+}
+
+//EL PODER VISUALIZAR EL ARBOL ABB COMO TAL POR PANTALLA
+
+void visualize(ABB seriefour, int n)
+{
+     if(seriefour==NULL)
+          return;
+     visualize(seriefour->right, n+1);
+
+     for(int i=0; i<n; i++)
+         cout<<"   ";
+
+     cout<< seriefour->xyz <<endl;
+
+     visualize(seriefour->left, n+1);
+}
+
+//BUSCADOR DEL NODO POR MEDIO DEL NUMERO QUE DESEAMOS ENCONTRAR
+//SERVIRA PARA SABER SI EL NODO ESTA DENTRO DEL MISMO, O NO EXISTE.
+
+bool searchID(ABB seriefour, int dato)
+{
+     int r=0;   // 0 indica que no lo encontre
+
+     if(seriefour==NULL)
+        return r;
+
+     if(dato<seriefour->xyz)
+         r = searchID(seriefour->left, dato);
+
+     else if(dato> seriefour->xyz)
+         r = searchID(seriefour->right, dato);
+     else
+     	r = 1;   // son iguales, lo encontre
+
+     return r;
+}
+
+
+int main()
+{
+    ABB seriefour = NULL;   // creado Arbol
+
+    int n;  // numero de nodos del arbol
+    int x; // elemento a insertar en cada nodo
+	int op;
+	int num;
+	
+   cout<<"\t \t \t \t \t \t--SERIE 4--" << endl;
+		
+		cout<<"\t \t \t      ARBOL ABB - ALMACENAR NUMEROS RESPECTIVAMENTE " << endl;
+		cout<<"\t \t \t \t \t BRYAN MARTINEZ 0909-20-6903 \n" << endl;
+		cout<<"\t \t \t INSTRUCCIONES: Utilizar opciones del 1 al 6, de no ser asi aperecera" << endl;
+		cout<<"\t \t \t un aviso de opcions incorrecta, al momento de visualizar el arbol ABB," << endl;
+		cout<<"\t \t \t los numeros en la parte de arriba seria DERECHA(NUMEROS MAYORES), entonces " << endl;
+		cout<<"\t \t \t los que aparezcan en la parte de abajo del primer numero seran IZQUIERDA  " << endl;
+		cout<<"\t \t \t numeros menores(siguiendo especificaciones como tal del arbol ABB).  " << endl;
+	do{
+		cout<<"\n------ MENU DE OPCIONES------"<<endl;
+		
+		cout<<"1-INSERTAR UN NODO EN EL ARBOL"<<endl;
+		cout<<"2-MOSTRAR ARBOL COMPLETO"<<endl;
+		cout<<"3-BUSCAR NODO EN ESPECIFICO"<<endl;
+		cout<<"4-RECORRER EL ARBOL, PRE-ORDEN, IN-ORDEN, POS-ORDEN"<<endl;
+		cout<<"5-BORRAR UN NODO DEL ARBOL"<<endl;
+		cout<<"6-FINALIZAR."<<endl;
+		
+		cout<<"\n\tOPCION A ESCOGER: ";
+		cin>>op;
+		
+		switch(op){
+			
+			
+			//CASE 1 PARA EL INGRESO DE DATOS DENTRO DE LOS NODOS DEL ARBOL ABB
+			
+			
+			case 1: cout << " NO. DE NODOS A INGRESAR AL ARBOL:  ";
+    				cin >> n;
+    				cout << endl;
+
+    				for(int i=0; i<n; i++)
+    				{
+        				cout << " NODO NO. " << i+1 << ": ";
+        				cin >> x;
+        				colocar( seriefour, x);
+    				}
+					system ("cls");
+					
+    				break;
+    		
+    		//CASE 2 - MOSTRAR POR PANTALLA EL ARBOL BINARIO DE BUSQUEDA CON LOS DATOS QUE SE INGRESARON
+    		//DENTRO DE LOS NODOS.
+    		
+			case 2: cout << "\n ARBOL ABB (ARBOL BINARIO DE BUSQUEDA) \n\n";
+    				visualize( seriefour, 0);
+    				system("pause");
+    					system ("cls");
+    				break;
+    		
+    		//CASE 3 PARA LA UTILIZACION DE BUSCAR UN NODO DESEADO
+    		//DE SER ASI, APARECERA BUSQUEDA EXITOSA SI EL NODO EXISTEN DENTRO DEL ARBOL
+    		//CASO CONTRARIO APARECE NODO NO EXISTENTE YA QUE NOE EXISTE DENTRO DEL ARBOL.
+    		
+    		case 3: cout<<"NODO A BUSCAR: ";
+    				cin>>num;
+    				if(searchID(seriefour, num)){
+						cout<<"\n \t \t ---BUSQUEDA EXITOSA---"<<endl;
+						getch();
+					}else{
+						cout<<"\n \t \t ---NODO NO EXISTENTE---"<<endl;
+						getch();
+					}
+						system ("cls");
+					break;
+					
+			//CASE 4 PARA PODER TENER UN RECORIDO DE CADA ORDEN DEL ARBOL ABB
+			
+			case 4: cout << "\n RECORRIDO DEL ARBOL ABB";
+					
+					cout << "\n\n PRE-ORDEN :  ";   opone(seriefour);
+				    cout << "\n\n IN-ORDEN  :  ";   optwo(seriefour);
+				    cout << "\n\n POS-ORDEN :  ";   opthree(seriefour);
+				     cout << "\n\n ";
+				    		system("pause");
+				    		system ("cls");
+				    break;
+				    	
+			//CASE 5 PARA ELIMINACION DE LOS NODOS QUE SE ESCOGAN POR EL USUARIO
+			
+			case 5: cout<<"NO. DE NODO A ELIMINAR:  ";
+					cout<<"\n"<<endl;
+					//Funcion Elimina Nodo
+						system("pause");
+						system ("cls");
+					break;
+			
+			case 6: cout<<"PROGRAMA FINALIZADO";
+					break;
+					//Parte de arriba case 6 para finalizar el programa
+					
+					//Parte de abajo default si en dado caso es una opcion que no esta en el programa
+					//Este mostratara por pantalla lo que tenemos el cout, diciendo opcion incorrecta
+			
+			default:
+						cout<<"\t \t \t :::::::::::::::::::::::::::::::::::::::::::::::::::::::::"<<endl;
+						cout<<" \t \t \t - - OPCION INCORRECTA, POR FAVOR VUELVA A INTENTARLO - -"<< endl;
+						cout<<"\t \t \t \t UTILIZAR SOLAMENTE OPCIONES DEL 1 AL 6."<< endl;	
+						cout<<"\t \t \t :::::::::::::::::::::::::::::::::::::::::::::::::::::::::"<<endl;
+						
+						system("pause");
+						system("cls");		
+
+						
+	
+					
+		}
+		
+	}while(op!=6);
+	
+	return 0;
+}
+
+//BRYAN ALEXANDER MARTINEZ GUZMAN 0909-20-6903
+//ULTIMA SERIE - PROGRAMACION I - ARBOL ABB
